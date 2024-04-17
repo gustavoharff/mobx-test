@@ -17,7 +17,14 @@ export const App = observer(() => {
               onChange={() => todo.toggle()}
             />
 
-            {todo.text}
+            <span
+              style={{
+                marginLeft: 8,
+                textDecoration: todo.done ? "line-through" : "none",
+              }}
+            >
+              {todo.text}
+            </span>
 
             <DeleteOutlined
               style={{ marginLeft: 8 }}
