@@ -4,8 +4,12 @@ import { Todo } from "../models/todo";
 export class TodoStore {
   public todos: Todo[];
 
+  private static KEY = "todos";
+
   constructor() {
-    this.todos = [];
+    const localStorageTodos = localStorage.getItem(TodoStore.KEY);
+
+    this.todos = localStorageTodos ? JSON.parse(localStorageTodos) : [];
 
     makeObservable(this, {
       todos: observable,
@@ -16,10 +20,18 @@ export class TodoStore {
 
   public add(todo: Todo) {
     this.todos.push(todo);
+
+    this.sync();
   }
 
   public remove(todo: Todo) {
     this.todos = this.todos.filter((t) => t !== todo);
+
+    this.sync();
+  }
+
+  private sync() {
+    localStorage.setItem(TodoStore.KEY, JSON.stringify(this.todos));
   }
 }
 
