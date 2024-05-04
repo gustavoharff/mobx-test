@@ -3,6 +3,8 @@ import { todoStore } from "../stores/todo-store";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Todo } from "../models/todo";
 import { action } from "mobx";
+import { Checkbox } from "antd";
+import classNames from "classnames";
 
 interface TodoItemProps {
   todo: Todo;
@@ -11,29 +13,22 @@ interface TodoItemProps {
 export const TodoItem = observer((props: TodoItemProps) => {
   const { todo } = props;
 
-  console.log('render: TodoItem')
-
   return (
-    <div key={todo.get('id')}>
-      <input
-        type="checkbox"
-        checked={todo.get('done')}
+    <div className="flex justify-between">
+      <Checkbox
+        className={classNames({
+          "line-through": todo.get("done"),
+        })}
+        checked={todo.get("done")}
         onChange={action(() => {
           todo.toggle();
         })}
-      />
-
-      <span
-        style={{
-          marginLeft: 8,
-          textDecoration: todo.get('done') ? "line-through" : "none",
-        }}
       >
-        {todo.get('text')}
-      </span>
+        {todo.get("text")}
+      </Checkbox>
 
       <DeleteOutlined
-        style={{ marginLeft: 8 }}
+        className="ml-auto"
         onClick={() => todoStore.remove(todo)}
       />
     </div>

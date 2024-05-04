@@ -3,13 +3,18 @@ import { Todo } from "../models/todo";
 import { Button, Form, Input } from "antd";
 import { todoStore } from "../stores/todo-store";
 
-export const TodoForm = observer(() => {
-  const [form] = Form.useForm();
+interface FormValues {
+  text: string;
+}
 
-  console.log('render: TodoForm')
+export const TodoForm = observer(() => {
+  const [form] = Form.useForm<FormValues>();
+
+  const text = Form.useWatch("text", form);
 
   return (
     <Form
+      className="w-full"
       form={form}
       onFinish={(values) => {
         const todo = new Todo({
@@ -20,15 +25,18 @@ export const TodoForm = observer(() => {
 
         todoStore.add(todo);
 
-        form.resetFields();
+        form.setFieldValue("text", "");
       }}
-      style={{ maxWidth: 450 }}
     >
       <Form.Item label="Text" name="text">
         <Input />
       </Form.Item>
 
-      <Button htmlType="submit">Add</Button>
+      <div className="flex justify-end w-full">
+        <Button htmlType="submit" disabled={!text} type="primary">
+          Add
+        </Button>
+      </div>
     </Form>
   );
 });

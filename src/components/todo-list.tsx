@@ -9,10 +9,8 @@ interface TodoListProps {
 export const TodoList = observer((props: TodoListProps) => {
   const { todos } = props;
 
-  console.log('render: TodoList')
-
   return (
-    <div style={{ marginBottom: 24 }}>
+    <div className="flex flex-col gap-1 w-full">
       {todos.map((todo) => (
         <TodoItem todo={todo} key={todo.get("id")} />
       ))}
