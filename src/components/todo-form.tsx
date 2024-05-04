@@ -6,11 +6,19 @@ import { todoStore } from "../stores/todo-store";
 export const TodoForm = observer(() => {
   const [form] = Form.useForm();
 
+  console.log('render: TodoForm')
+
   return (
     <Form
       form={form}
       onFinish={(values) => {
-        todoStore.add(new Todo(null, values.text, false));
+        const todo = new Todo({
+          id: crypto.randomUUID(),
+          text: values.text,
+          done: false,
+        });
+
+        todoStore.add(todo);
 
         form.resetFields();
       }}

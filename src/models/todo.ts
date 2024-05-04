@@ -1,26 +1,28 @@
 import { action, makeObservable, observable } from "mobx";
+import { Model } from "./model";
 
-export class Todo {
-  public id: string;
+export type TodoModel = {
+  id: string;
+  text: string;
+  done: boolean;
+};
 
-  public text: string;
+export class Todo extends Model<TodoModel> {
+  constructor(data: TodoModel) {
+    super(data);
 
-  public done: boolean;
-
-  constructor(id: string | null, text: string, done: boolean) {
-    this.id = id ?? crypto.randomUUID();
-    this.text = text;
-    this.done = done;
-
-    makeObservable(this, {
+    makeObservable(this.data, {
       id: observable,
       text: observable,
       done: observable,
-      toggle: action
+    });
+
+    makeObservable(this, {
+      toggle: action,
     });
   }
 
   public toggle() {
-    this.done = !this.done;
+    this.data.done = !this.data.done;
   }
 }

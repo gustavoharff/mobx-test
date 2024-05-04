@@ -1,5 +1,5 @@
 import { action, autorun, makeObservable, observable } from "mobx";
-import { Todo } from "../models/todo";
+import { Todo, TodoModel } from "../models/todo";
 
 export class TodoStore {
   public todos: Todo[] = [];
@@ -10,8 +10,11 @@ export class TodoStore {
     const localStorageTodos = localStorage.getItem(TodoStore.KEY);
 
     if (localStorageTodos) {
-      this.todos = JSON.parse(localStorageTodos).map((todo: Todo) => {
-        return new Todo(todo.id, todo.text, todo.done);
+      const parsedTodos: Array<{ data: TodoModel }> =
+        JSON.parse(localStorageTodos);
+
+      this.todos = parsedTodos.map((todo) => {
+        return new Todo(todo.data);
       });
     }
 
@@ -23,7 +26,7 @@ export class TodoStore {
 
     autorun(() => {
       localStorage.setItem(TodoStore.KEY, JSON.stringify(this.todos));
-    })
+    });
   }
 
   public add(todo: Todo) {

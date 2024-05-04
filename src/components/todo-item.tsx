@@ -11,11 +11,13 @@ interface TodoItemProps {
 export const TodoItem = observer((props: TodoItemProps) => {
   const { todo } = props;
 
+  console.log('render: TodoItem')
+
   return (
-    <div key={todo.id}>
+    <div key={todo.get('id')}>
       <input
         type="checkbox"
-        checked={todo.done}
+        checked={todo.get('done')}
         onChange={action(() => {
           todo.toggle();
         })}
@@ -24,10 +26,10 @@ export const TodoItem = observer((props: TodoItemProps) => {
       <span
         style={{
           marginLeft: 8,
-          textDecoration: todo.done ? "line-through" : "none",
+          textDecoration: todo.get('done') ? "line-through" : "none",
         }}
       >
-        {todo.text}
+        {todo.get('text')}
       </span>
 
       <DeleteOutlined
